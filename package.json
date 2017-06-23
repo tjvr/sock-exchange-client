@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tjvr/sock-exchange.git"
+    "url": "git+https://github.com/tjvr/sock-exchange-client.git"
   },
   "author": "tjvr",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tjvr/sock-exchange/issues"
+    "url": "https://github.com/tjvr/sock-exchange-client/issues"
   },
-  "homepage": "https://github.com/tjvr/sock-exchange#readme",
+  "homepage": "https://github.com/tjvr/sock-exchange-client#readme",
   "dependencies": {
     "ws": "^3.0.0"
   }
