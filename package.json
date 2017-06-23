@@ -1,0 +1,22 @@
+{
+  "name": "sock-exchange",
+  "version": "0.1.0",
+  "description": "Client for the simulated sock exchange",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tjvr/sock-exchange.git"
+  },
+  "author": "tjvr",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tjvr/sock-exchange/issues"
+  },
+  "homepage": "https://github.com/tjvr/sock-exchange#readme",
+  "dependencies": {
+    "ws": "^3.0.0"
+  }
+}
