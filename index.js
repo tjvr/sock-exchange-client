@@ -69,21 +69,18 @@ class Sox {
     let order_id = this.highestId = (this.highestId + 1) % 0xffff
     //if (this.orders[order_id]) throw 'oops'
     this.orders[order_id] = order
-    console.log('in', order_id)
     order._sox = this
     return order._id = order_id
   }
 
   _onFill({order_id, price, size}) {
     let order = this.orders[order_id]
-    console.log('fill', order_id)
     order.emit('fill', {price, size})
   }
 
   _onOut({order_id}) {
     let order = this.orders[order_id]
     delete this.orders[order_id]
-    console.log('out', order_id)
     order.emit('out')
   }
 }
