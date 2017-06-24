@@ -2,7 +2,8 @@
   "name": "sock-exchange",
   "version": "0.1.0",
   "description": "Client for the simulated sock exchange",
-  "main": "index.js",
+  "main": "sox/index.js",
+  "browser": "sox/core.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
