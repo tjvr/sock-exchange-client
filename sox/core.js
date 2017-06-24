@@ -75,6 +75,7 @@
         this.on('welcome', this._onWelcome.bind(this))
         this.on('position', this._onPosition.bind(this))
         this.on('book', this._onBook.bind(this))
+        this.on('trade', this._onTrade.bind(this))
 
         // order tracking
         this.orders = Object.create(null)
@@ -112,6 +113,10 @@
         stock.emit('book', {buys, sells})
       }
 
+      _onTrade({symbol, price, size}) {
+        let stock = this.stocks.find(s => s.symbol === symbol)
+        stock.emit('trade', {price, size})
+      }
 
       /* * */
 
