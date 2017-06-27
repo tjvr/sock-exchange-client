@@ -82,6 +82,8 @@
         // order tracking
         this.orders = Object.create(null)
         this.highestId = 0
+        this.on('reject', this._onReject.bind(this))
+        this.on('ack', this._onAck.bind(this))
         this.on('fill', this._onFill.bind(this))
         this.on('out', this._onOut.bind(this))
       }
@@ -102,7 +104,10 @@
 
       _onWelcome({symbols}) {
         this.symbols = symbols
-        this.stocks = symbols.map(s => new Stock(s, this))
+        this.stocks = {}
+        symbols.forEach(symbol => {
+          this.stocks[symbol] = new Stock(symbol, this)
+        })
       }
 
       _onPosition({balance, positions}) {
@@ -111,12 +116,12 @@
       }
 
       _onBook({symbol, buys, sells}) {
-        let stock = this.stocks.find(s => s.symbol === symbol)
+        let stock = this.stocks[symbol]
         stock.emit('book', {buys, sells})
       }
 
       _onTrade({symbol, price, size}) {
-        let stock = this.stocks.find(s => s.symbol === symbol)
+        let stock = this.stocks[symbol]
         stock.emit('trade', {price, size})
       }
 
@@ -133,16 +138,25 @@
       }
 
       cancel(order) {
-        //delete this.orders[order._id]
         this.send('cancel', {order_id: order._id})
       }
 
       _register(order) {
-        let order_id = this.highestId = (this.highestId + 1) % 0xffff
+        let order_id = this.highestId = (this.highestId + 1) % 0x10000
         //if (this.orders[order_id]) throw 'oops'
         this.orders[order_id] = order
         order._sox = this
         return order._id = order_id
+      }
+
+      _onAck({order_id}) {
+        let order = this.orders[order_id]
+        order.emit('ack')
+      }
+
+      _onReject({order_id, message}) {
+        let order = this.orders[order_id]
+        order.emit('reject', {message})
       }
 
       _onFill({order_id, price, size}) {
