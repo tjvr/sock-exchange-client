@@ -77,6 +77,8 @@
         this.on('book', this._onBook.bind(this))
         this.on('trade', this._onTrade.bind(this))
 
+        ws.addEventListener('close', e => this.emit('close', e))
+
         // order tracking
         this.orders = Object.create(null)
         this.highestId = 0
