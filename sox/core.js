@@ -150,6 +150,7 @@
 
       _onOut({order_id}) {
         let order = this.orders[order_id]
+        order._sox = null
         delete this.orders[order_id]
         order.emit('out')
       }
