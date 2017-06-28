@@ -156,7 +156,9 @@
 
       _onReject({order_id, message}) {
         let order = this.orders[order_id]
+        delete this.orders[order_id]
         order.emit('reject', {message})
+        order._sox = null
       }
 
       _onFill({order_id, price, size}) {
@@ -166,9 +168,9 @@
 
       _onOut({order_id}) {
         let order = this.orders[order_id]
-        order._sox = null
         delete this.orders[order_id]
         order.emit('out')
+        order._sox = null
       }
     }
     emitter(Sox.prototype)
@@ -217,7 +219,9 @@
 
       function message(e) {
         let json = JSON.parse(e.data)
-        if (json._type === 'error') reject(json.error)
+        if (json._type === 'error') {
+          throw new Error(json.message)
+        }
         ws.removeEventListener('message', message)
         var sox = new Sox(ws)
         sox._onMessage(e) // deliver first message by hand

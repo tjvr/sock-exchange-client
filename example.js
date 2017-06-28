@@ -1,7 +1,7 @@
 
 const connect = require('./sox')
 
-const NAME = ''
+const NAME = 'freddy'
 const TOKEN = ''
 
 connect('socks.tjvr.org', NAME, TOKEN, sox => {
