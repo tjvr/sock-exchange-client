@@ -102,6 +102,19 @@
 
       /* * */
 
+      identify(name, token, cb) {
+        if (typeof cb !== 'function') throw new Error("expected sox.identify(name, token, cb)")
+        this.send('identify', {name, token})
+        this.once('error', this._throwError)
+        this.once('position', () => setTimeout(() => cb(this)))
+      }
+
+      _throwError({message}) {
+        throw new Error(message)
+      }
+
+      /* * */
+
       _onWelcome({symbols}) {
         this.symbols = symbols
         this.stocks = {}
@@ -209,31 +222,14 @@
     }
     emitter(Order.prototype)
 
-     
-    function connect(host, name, token, cb) {
+    function connect(host, cb) {
+      if (typeof cb !== 'function') throw new Error("expected connect(host, cb)")
       let ws = new WebSocket(`ws://${host}/ws`)
        
       ws.addEventListener('open', () => {
-        ws.send(JSON.stringify({_type: 'identify', name, token}))
-      })
-
-      function message(e) {
-        let json = JSON.parse(e.data)
-        if (json._type === 'error') {
-          throw new Error(json.message)
-        }
-        ws.removeEventListener('message', message)
         var sox = new Sox(ws)
-        sox._onMessage(e) // deliver first message by hand
-
-        // wait for position message
-        sox.once('position', () => {
-          setTimeout(() => {
-            cb(sox)
-          })
-        })
-      }
-      ws.addEventListener('message', message)
+        cb(sox)
+      })
     }
 
     return connect
