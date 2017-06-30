@@ -105,7 +105,7 @@
       /* * */
 
       identify(name, token, cb) {
-        if (typeof cb !== 'function') throw new Error("expected sox.identify(name, token, cb)")
+        //if (typeof cb !== 'function') throw new Error("expected sox.identify(name, token, cb)")
         this.send('identify', {name, token})
         this.once('error', this._throwError)
         this.once('position', () => setTimeout(() => cb(this)))
