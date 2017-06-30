@@ -5,6 +5,7 @@ const NAME = 'freddy'
 const TOKEN = '123'
 
 Sox.connectAs('socks.tjvr.org', NAME, TOKEN, sox => {
+  const {SILK, NYLON, MERINO, CASHMERE, WOOL, SOCK, PAIR} = sox.stocks
   console.log('connected as', NAME)
   console.log('balance:', sox.balance + '$')
   console.log(sox.positions)
@@ -16,14 +17,14 @@ Sox.connectAs('socks.tjvr.org', NAME, TOKEN, sox => {
 
   const stocks = sox.stocks
   function buy() {
-    const order = stocks.SILK.buy(999, 10)
+    const order = SILK.buy(999, 10)
     order.on('out', buy)
     order.on('reject', () => setTimeout(buy, 1000))
   }
   buy()
 
   function sell() {
-    const order = stocks.SILK.sell(1001, 10)
+    const order = SILK.sell(1001, 10)
     order.on('out', sell)
     order.on('reject', () => setTimeout(sell, 1000))
   }
