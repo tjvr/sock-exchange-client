@@ -97,6 +97,8 @@
         let json = JSON.parse(e.data)
         let type = json._type
         delete json._type
+        if (json.symbol) { json.stock = this.stocks[json.symbol] }
+        if (json.order_id) { json.order = this.orders[json.order_id] }
         this.emit(type, json)
       }
 
@@ -128,13 +130,11 @@
         this.positions = positions
       }
 
-      _onBook({symbol, buys, sells}) {
-        let stock = this.stocks[symbol]
+      _onBook({stock, buys, sells}) {
         stock.emit('book', {buys, sells})
       }
 
-      _onTrade({symbol, price, size}) {
-        let stock = this.stocks[symbol]
+      _onTrade({stock, price, size}) {
         stock.emit('trade', {price, size})
       }
 
@@ -162,26 +162,22 @@
         return order._id = order_id
       }
 
-      _onAck({order_id}) {
-        let order = this.orders[order_id]
+      _onAck({order}) {
         order.emit('ack')
       }
 
-      _onReject({order_id, message}) {
-        let order = this.orders[order_id]
-        delete this.orders[order_id]
+      _onReject({order, message}) {
+        delete this.orders[order._id]
         order.emit('reject', {message})
         order._sox = null
       }
 
-      _onFill({order_id, price, size}) {
-        let order = this.orders[order_id]
+      _onFill({order, price, size}) {
         order.emit('fill', {price, size})
       }
 
-      _onOut({order_id}) {
-        let order = this.orders[order_id]
-        delete this.orders[order_id]
+      _onOut({order}) {
+        delete this.orders[order._id]
         order.emit('out')
         order._sox = null
       }
