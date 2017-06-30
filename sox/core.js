@@ -224,7 +224,7 @@
        
       ws.addEventListener('open', () => {
         var sox = new Sox(ws)
-        cb(sox)
+        sox.on('welcome', () => setTimeout(() => cb(sox)))
       })
     }
 

@@ -1,10 +1,10 @@
 
-const connect = require('./sox')
+const Sox = require('./sox')
 
 const NAME = 'freddy'
-const TOKEN = ''
+const TOKEN = '123'
 
-connect('socks.tjvr.org', NAME, TOKEN, sox => {
+Sox.connectAs('socks.tjvr.org', NAME, TOKEN, sox => {
   console.log('connected as', NAME)
   console.log('balance:', sox.balance + '$')
   console.log(sox.positions)
