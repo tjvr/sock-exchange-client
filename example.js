@@ -24,7 +24,7 @@ connect('socks.tjvr.org', NAME, TOKEN, sox => {
 
   function sell() {
     const order = stocks.SILK.sell(1001, 10)
-    order.on('sell', buy)
+    order.on('out', buy)
     order.on('reject', () => setTimeout(sell, 1000))
   }
   sell()
