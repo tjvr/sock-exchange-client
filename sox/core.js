@@ -197,6 +197,8 @@
 
       buy(price, size) { return this.order('buy', price, size) }
       sell(price, size) { return this.order('sell', price, size) }
+      convertTo(size) { return this.order('convert_to', 0, size) }
+      convertFrom(size) { return this.order('convert_from', 0, size) }
       order(dir, price, size) { return this._sox.order(this.symbol, dir, price, size) }
       
       _onBook({buys, sells}) {
