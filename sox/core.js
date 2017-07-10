@@ -144,6 +144,7 @@
       sell(symbol, price, size) { return this.order(symbol, 'sell', price, size) }
 
       order(symbol, dir, price, size) {
+        var size = size|0
         let order = new Order(symbol, dir, price, size)
         let order_id = this._register(order)
         this.send(dir, {order_id, symbol, price, size})
@@ -211,11 +212,12 @@
 
     class Order {
       constructor(symbol, dir, price, size) {
+        if ((size|0) < 1) { throw new Error('size must be positive') }
         Object.assign(this, {symbol, dir, price, size})
       }
 
       cancel() {
-        this._sox.cancel(this)
+        if (this._sox) this._sox.cancel(this)
       }
     }
     emitter(Order.prototype)

@@ -6,7 +6,7 @@ const connect = sox(WebSocket)
 function connectAs(host, name, token, cb) {
   console.log(`connecting to ${host}...`)
   return connect(host, sox => {
-    console.log(`identifying as {name}...`)
+    console.log(`identifying as '${name}'...`)
     sox.identify(name, token, cb)
   })
 }
